@@ -55,3 +55,45 @@ root@122399bffcc9:/# apt install nginx
 root@122399bffcc9:/# exit
 ```
 
+### 4. 기록을 바탕으로 Dockerfile 생성
+```
+$ vi Dockerfile
+```
+![image](https://github.com/qkralsgml78/ubuntu-nginx/assets/149050285/41336938-4f0e-4bd3-805f-c1e5d0ec0e9d)
+![스크린샷 2024-02-18 020002](https://github.com/qkralsgml78/ubuntu-nginx/assets/149050285/9c58f37a-a37e-4899-881b-23ed719c6eb4)
+
+### error 발생
+```
+1. y를 중간에 넣어주지 않은 문제
+- y란 install할 때 자동으로 yes해주겠다는 것
+
+2. cmd창을 자동으로 생성해주는 코드를 넣어주지 않은 문제
+```
+![스크린샷 2024-02-18 021103](https://github.com/qkralsgml78/ubuntu-nginx/assets/149050285/8b3ea568-eb6d-4846-b63e-12d11b9e8f81)
+
+### 수정 & 해결
+```
+FROM ubuntu:22.04
+RUN apt update;apt install -y nginx
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+![스크린샷 2024-02-18 021011](https://github.com/qkralsgml78/ubuntu-nginx/assets/149050285/441d8355-a3bd-4c45-8a3b-a4fb4d860838)
+
+![스크린샷 2024-02-18 021029](https://github.com/qkralsgml78/ubuntu-nginx/assets/149050285/050794f5-ca40-4b05-83b9-6eee9638fc0d)
+
+### Build & Run
+```
+$ sudo docker run -itd --name D-ubuntu -p 9053:80 ubuntu
+$ sudo docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS                                   NAMES
+448db98f2477   ubuntu         "nginx -g 'daemon of…"   5 seconds ago   Up 4 seconds   0.0.0.0:9053->80/tcp, :::9053->80/tcp   D-ubuntu
+122399bffcc9   3db8720ecbf5   "/bin/bash"              2 hours ago     Up 2 hours     0.0.0.0:9051->80/tcp, :::9051->80/tcp   ubuntu
+```
+![image](https://github.com/qkralsgml78/ubuntu-nginx/assets/149050285/6142004b-d591-48f0-9158-230d294b10bd)
+- itd를 넣어줌으로써 run하고 start를 따로 해줘야 하지만 하지 않아도 바로 컨테이너를 확인하면 실행이 되어 있는 것을 확인할 수 있다.
+  
+
+### 컨테이너 확인
+
+![image](https://github.com/qkralsgml78/ubuntu-nginx/assets/149050285/4b3ae619-2e2d-4106-8ebd-0e2f257fe703)
